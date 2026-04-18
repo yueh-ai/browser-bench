@@ -1,4 +1,6 @@
 .tools/
+.npm-global/
+.playwright-cli/
 node_modules/
 __pycache__/
 *.pyc

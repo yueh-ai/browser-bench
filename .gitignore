@@ -1,0 +1,15 @@
+.tools/
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+.python-version
+.pytest_cache/
+results/runs/
+results/*.json
+results/*.ndjson
+!results/.gitkeep
+.DS_Store
+.env
+*.log
+/tmp/

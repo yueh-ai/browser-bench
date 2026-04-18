@@ -23,49 +23,39 @@ npm is a thin wrapper symlinking a platform binary (`bin/agent-browser-linux-x64
 
 ## CLI Surface
 
-| Group | Subcommands (one-liners) |
+| Group | Subcommands |
 |---|---|
-| Navigation | `open <url>`, `back`, `forward`, `reload`, `close [--all]` |
-| Mouse/interact | `click`, `dblclick`, `hover`, `focus`, `drag`, `scroll <dir> [px]`, `scrollintoview`, `mouse move|down|up|wheel` |
-| Input | `type`, `fill`, `press <key>`, `keyboard type|inserttext`, `check`, `uncheck`, `select`, `upload`, `download` |
-| Read | `snapshot` (a11y tree + `@eN` refs), `get text|html|value|attr|title|url|count|box|styles|cdp-url`, `is visible|enabled|checked` |
+| Nav | `open`, `back`, `forward`, `reload`, `close [--all]` |
+| Interact | `click`, `dblclick`, `hover`, `focus`, `drag`, `scroll <dir>`, `scrollintoview`, `mouse move|down|up|wheel` |
+| Input | `type`, `fill`, `press`, `keyboard type|inserttext`, `check`, `uncheck`, `select`, `upload`, `download` |
+| Read | `snapshot` (a11y tree + `@eN`), `get text|html|value|attr|title|url|count|box|styles|cdp-url`, `is visible|enabled|checked` |
 | Semantic find | `find role|text|label|placeholder|alt|title|testid|first|last|nth <val> <action>` |
-| Wait | `wait <sel|ms>` (flags: `--text`, `--url`, `--load networkidle`) |
-| Capture | `screenshot [path]` (`--annotate`, `--full`), `pdf <path>`, `record start|stop`, `trace`, `profiler` |
-| JS / CDP | `eval <js>`, `connect <port|url>`, `--cdp <port>`, `--auto-connect` |
+| Wait | `wait <sel|ms>` (`--text`, `--url`, `--load networkidle`) |
+| Capture | `screenshot [path]` (`--annotate`, `--full`), `pdf`, `record start|stop`, `trace`, `profiler` |
+| JS / CDP | `eval <js>`, `connect <port|url>`, `--cdp`, `--auto-connect` |
 | Tabs | `tab [new|list|close|<n>]` |
 | Storage | `cookies [get|set|clear]`, `storage local|session` |
 | Network | `network route|unroute|requests|har start|stop` |
 | Settings | `set viewport|device|geo|offline|headers|credentials|media` |
 | Diff | `diff snapshot|screenshot|url` |
 | Debug | `console`, `errors`, `highlight`, `inspect`, `clipboard` |
-| Streaming | `stream enable|disable|status` (WebSocket viewport streaming) |
+| Stream | `stream enable|disable|status` (WebSocket viewport) |
 | Sessions | `session`, `session list` |
-| Auth vault | `auth save|login|list|show|delete <name>` |
-| State | `state save|load|list|show|clear <path>` [UNVERIFIED — listed in README but not in `--help` top-level; may be `auth`/`--state` only on v0.26.0] |
+| Auth vault | `auth save|login|list|show|delete` |
+| State | `state save|load|list|show|clear` [UNVERIFIED — README lists it; not a top-level subcommand on v0.26.0 `--help`, likely available via `--state` flag and `auth`] |
 | Confirm | `confirm <id>`, `deny <id>` |
-| Chat (AI) | `chat <msg>` single-shot, `chat` REPL |
-| Dashboard | `dashboard start [--port N]`, `dashboard stop` (default :4848) |
+| Chat | `chat <msg>` (single-shot), `chat` (REPL) |
+| Dashboard | `dashboard start [--port N]` / `stop` (default :4848) |
 | Setup | `install [--with-deps]`, `upgrade`, `doctor [--fix]`, `profiles`, `skills list|get|path` |
-| Batch | `batch [--bail] "cmd1" "cmd2" ...` (args or JSON stdin) |
+| Batch | `batch [--bail] "cmd1" "cmd2" ...` (args or `--json` stdin) |
 
-Key global flags: `--json`, `--headed`, `--session <name>`, `--profile`,
-`--session-name`, `--state <path>`, `--auto-connect`, `--cdp <port>`,
-`--executable-path`, `--extension`, `--args`, `--proxy`, `--allowed-domains`,
-`--action-policy`, `--confirm-actions`, `--engine chrome|lightpanda`,
-`-p/--provider ios|browserbase|kernel|browseruse|browserless|agentcore`,
-`--max-output`, `--content-boundaries`, `--screenshot-dir|format|quality`,
-`--model` (for chat), `-v`, `-q`, `--debug`, `--version`.
+Key globals: `--json`, `--headed`, `--session`, `--profile`, `--session-name`, `--state`, `--auto-connect`, `--cdp`, `--executable-path`, `--extension`, `--args`, `--proxy`, `--allowed-domains`, `--action-policy`, `--confirm-actions`, `--engine chrome|lightpanda`, `-p/--provider ios|browserbase|kernel|browseruse|browserless|agentcore`, `--max-output`, `--content-boundaries`, `--screenshot-{dir,format,quality}`, `--model`, `-v`, `-q`, `--debug`.
 
 ## RefSystem
 
-`snapshot -i` returns a compact accessibility tree with deterministic refs
-`@e1`, `@e2`, ... Interact using the ref in place of a selector:
+`snapshot -i` returns an a11y tree with deterministic refs `@e1`, `@e2`, ...
 
 ```
-Page: Example - Log in
-URL: https://example.com/login
-
 @e1 [heading] "Log in"
 @e2 [form]
   @e3 [input type="email"] placeholder="Email"
@@ -73,46 +63,25 @@ URL: https://example.com/login
   @e5 [button type="submit"] "Continue"
 ```
 
-Then `agent-browser fill @e3 "me@example.com" && agent-browser click @e5`.
-Refs are re-numbered on every snapshot and go stale on any page change
-(nav, re-render, dialog). Snapshot refs inline iframe subtrees with frame
-context so cross-frame clicks work without manual frame switching.
-Snapshot flags: `-i` (interactive only), `-c` (compact), `-d N` (depth),
-`-s <css>` (scope), `-u` (include href URLs), `--json`.
+Then `agent-browser fill @e3 "me@x.com" && agent-browser click @e5`. Refs are re-numbered every snapshot and go stale on any page change. Snapshot inlines iframe subtrees so cross-frame clicks work without frame switching. Flags: `-i` interactive only, `-c` compact, `-d N` depth, `-s <css>` scope, `-u` href URLs, `--json`.
 
 ## BatchSupport
 
-Single-invocation batch via args or JSON stdin:
-
 ```
-agent-browser batch "open https://example.com" "snapshot -i" "click @e1"
+agent-browser batch "open https://ex.com" "snapshot -i" "click @e1"
 agent-browser batch --bail "open https://ex.com" "click @e1"
-echo '[["open","https://x.com"],["snapshot","-i"],["click","@e1"]]' \
-  | agent-browser batch --json
+echo '[["open","https://x.com"],["snapshot","-i"],["click","@e1"]]' | agent-browser batch --json
 ```
 
-`--bail` stops on first error; default is continue-all. The daemon makes
-shell `&&` chaining equivalent in practice (browser persists across calls).
+`--bail` stops on first error (default continue-all). Daemon persistence makes shell `&&` chaining effectively equivalent.
 
 ## Daemon
 
-First command auto-spawns a local daemon over a unix socket at
-`$HOME/.agent-browser/` that owns the Chrome process; subsequent commands
-reuse it (hence sub-second round trips). Idle auto-shutdown via
-`AGENT_BROWSER_IDLE_TIMEOUT_MS` (off by default). `doctor` lists active
-daemons; `close --all` terminates every session's browser. Sessions are
-isolated via `--session <name>` or `AGENT_BROWSER_SESSION`; each gets its
-own Chrome. `--session-name` auto-saves/restores cookies + localStorage to
-`~/.agent-browser/sessions/<name>` (optionally AES-256-GCM encrypted with
-`AGENT_BROWSER_ENCRYPTION_KEY`, 64-char hex). `--state <file>` loads a
-Playwright-style storageState JSON. `--profile <name|path>` reuses a real
-Chrome profile for login persistence. `auth save` stores credentials in an
-encrypted vault, `auth login <name>` replays them.
+First command auto-spawns a local daemon over a unix socket under `$HOME/.agent-browser/` that owns Chrome; subsequent calls reuse it (sub-second RTT). Idle exit via `AGENT_BROWSER_IDLE_TIMEOUT_MS` (off by default). `doctor` enumerates active daemons; `close --all` kills every session's browser. Sessions isolated via `--session <name>` / `AGENT_BROWSER_SESSION` (separate Chrome per name). `--session-name` auto-saves/restores cookies+localStorage to `~/.agent-browser/sessions/<name>`, optionally AES-256-GCM encrypted with `AGENT_BROWSER_ENCRYPTION_KEY` (64-hex). `--state <file>` loads a Playwright-style storageState JSON. `--profile <name|path>` reuses a real Chrome profile. `auth save|login` stores/replays form credentials in an encrypted vault.
 
 ## InstallAttemptResult
 
-Installed via npm to a user-local prefix (no sudo) at
-`/home/user/browser-bench/.npm-global`:
+Installed via npm to user-local prefix (no sudo) at `/home/user/browser-bench/.npm-global`:
 
 ```
 $ npm config set prefix "$PWD/.npm-global"
@@ -124,68 +93,36 @@ $ agent-browser --version
 agent-browser 0.26.0
 ```
 
-`--help` ran cleanly; full help text captured in transcript (Core Commands,
-Navigation, Snapshot Options, Authentication, Batch, Chat, Dashboard,
-Setup, Environment, Configuration, Examples, Command Chaining, iOS). Chrome
-download failed in this sandbox:
+`--help` ran cleanly (full text captured: Core Commands, Navigation, Snapshot Options, Authentication, Batch, Chat, Dashboard, Setup, Environment, Examples, Command Chaining, iOS). Chrome download failed — sandbox blocks the CfT CDN:
 
 ```
 $ agent-browser install
 ⚠ Linux detected. If browser fails to launch, run: agent-browser install --with-deps
 Installing Chrome...
-✗ Failed to fetch version info: error sending request for url
-  (https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json):
-  invalid peer certificate: UnknownIssuer
-```
-
-`doctor` confirms: daemon area uninitialized, no Chrome binary present,
-Chrome-for-Testing CDN unreachable (TLS cert rejected by sandbox egress).
-Workaround for benchmark: supply `--executable-path /path/to/chromium` or
-mirror the CfT zip. Any `open` call without Chrome returns:
-
-```
+✗ Failed to fetch version info: ... invalid peer certificate: UnknownIssuer
 $ agent-browser --json snapshot
 {"success":false,"data":null,"error":"Auto-launch failed: Chrome not found. ..."}
 ```
 
-Exit code was 0 even on the Chrome-not-found error — success must be read
-from the JSON `success` field, not the process exit code, when `--json` is
-set.
+`doctor` confirms: no Chrome present, CfT CDN unreachable (TLS cert rejection on egress). Workaround for the benchmark: install chromium via apt and set `--executable-path /usr/bin/chromium` or `AGENT_BROWSER_EXECUTABLE_PATH`, or mirror the CfT zip. Exit code was **0** even on the Chrome-not-found error in `--json` mode — rely on the JSON `success` field, not exit status.
 
 ## PythonIntegrationNote
 
-Exec recipe:
-
 ```python
-import json, subprocess
-PATH = "/home/user/browser-bench/.npm-global/bin:" + os.environ["PATH"]
-r = subprocess.run(
-    ["agent-browser", "--json", "snapshot", "-i"],
-    capture_output=True, text=True, timeout=60,
-    env={**os.environ, "PATH": PATH,
-         "AGENT_BROWSER_SESSION": "bench-1",
-         "AGENT_BROWSER_EXECUTABLE_PATH": "/usr/bin/chromium"},
-)
-payload = json.loads(r.stdout)          # {"success": bool, "data": ..., "error": str|None}
+import json, os, subprocess
+env = {**os.environ,
+       "PATH": "/home/user/browser-bench/.npm-global/bin:" + os.environ["PATH"],
+       "AGENT_BROWSER_SESSION": "bench-1",
+       "AGENT_BROWSER_EXECUTABLE_PATH": "/usr/bin/chromium"}
+r = subprocess.run(["agent-browser", "--json", "snapshot", "-i"],
+                   capture_output=True, text=True, timeout=60, env=env)
+payload = json.loads(r.stdout)   # {"success": bool, "data": ..., "error": str|None}
 ok = payload.get("success") is True
 ```
 
-- With `--json`, stdout is a single JSON object
-  `{"success":bool,"data":...,"error":str|None}`; `data` shape depends on
-  subcommand (snapshot data is a list of ref nodes; `get text` is a string;
-  `is visible` is a bool).
-- Without `--json`, stdout is human-formatted text (snapshot uses the
-  indented `@eN [role] "name"` form shown above). [UNVERIFIED — exit code
-  semantics for non-JSON mode not tested; observed exit 0 even on Chrome
-  failure with `--json`.]
-- stderr quirks: `install` prints a yellow warning banner to stderr even
-  on success; `doctor` writes everything to stdout. `--debug` dumps verbose
-  traces to stderr.
-- Concurrency: pass a distinct `--session <name>` (or
-  `AGENT_BROWSER_SESSION`) per Python worker — each gets its own daemon +
-  Chrome. Reuse the same session name across calls to keep cookies/tabs.
-- Clean shutdown: `agent-browser close --all` at suite teardown. Consider
-  `AGENT_BROWSER_IDLE_TIMEOUT_MS=300000` so abandoned daemons self-exit.
-- For large pages, set `AGENT_BROWSER_MAX_OUTPUT` and
-  `AGENT_BROWSER_CONTENT_BOUNDARIES` to keep outputs bounded and
-  unambiguously delimited for prompt assembly.
+- `--json` stdout is a single object `{"success":bool,"data":...,"error":str|None}`; `data` shape varies (snapshot = list of ref nodes, `get text` = string, `is visible` = bool).
+- Without `--json`, stdout is the human `@eN [role] "name"` indented form. [UNVERIFIED — non-JSON exit-code semantics not tested; observed exit 0 under Chrome failure with `--json`.]
+- stderr: `install` prints its warning banner to stderr even on success; `doctor` is stdout-only; `--debug` dumps traces to stderr.
+- Concurrency: distinct `--session <name>` (or `AGENT_BROWSER_SESSION`) per Python worker — each gets its own daemon+Chrome. Reuse a name to keep cookies/tabs.
+- Teardown: `agent-browser close --all`; set `AGENT_BROWSER_IDLE_TIMEOUT_MS=300000` so orphaned daemons self-exit.
+- Keep prompt sizes bounded with `AGENT_BROWSER_MAX_OUTPUT` and `AGENT_BROWSER_CONTENT_BOUNDARIES`.

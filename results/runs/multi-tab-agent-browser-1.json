@@ -1,0 +1,28 @@
+{
+  "task_id": "multi-tab",
+  "tool": "agent-browser",
+  "seed": 1,
+  "sid": "bench-multi-tab-agent-browser-1",
+  "started_at": "2026-04-18T00:00:00Z",
+  "ended_at": "2026-04-18T00:00:00Z",
+  "elapsed_ms": 7759,
+  "turns": 5,
+  "commands": [
+    "open http://localhost:3000/products?sid=bench-multi-tab-agent-browser-1",
+    "snapshot -i",
+    "eval (enumerate product links)",
+    "eval (fetch all 5 product pages)",
+    "eval (POST total 86.84 to /api/total)"
+  ],
+  "agent_verdict": "success",
+  "agent_notes": "Prices: 9.99+14.50+22.00+7.25+33.10=86.84. POST returned {ok:true}.",
+  "server_verdict": {
+    "passed": true,
+    "evidence": {
+      "total_submitted": 86.84,
+      "total_expected": 86.84
+    },
+    "score": 1.0
+  },
+  "success": true
+}

@@ -7,10 +7,11 @@ __pycache__/
 .venv/
 .python-version
 .pytest_cache/
-results/runs/
-results/*.json
+results/runs/*.partial.json
+!results/runs/*.json
 results/*.ndjson
 !results/.gitkeep
+!results/aggregate.json
 .DS_Store
 .env
 *.log

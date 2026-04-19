@@ -1,0 +1,32 @@
+{
+  "task_id": "auth-modal",
+  "tool": "agent-browser",
+  "seed": 1,
+  "sid": "bench-auth-modal-agent-browser-1",
+  "started_at": "2026-04-18T00:00:00Z",
+  "ended_at": "2026-04-18T00:00:00Z",
+  "elapsed_ms": 60778,
+  "turns": 7,
+  "commands": [
+    "open http://localhost:3000/auth?sid=bench-auth-modal-agent-browser-1",
+    "snapshot -i",
+    "batch fill @e2 admin | fill @e3 hunter2 | click @e4",
+    "snapshot -i",
+    "batch click @e2 | snapshot -i",
+    "batch fill @e4 2026-05-20 | click @e6 | snapshot -i",
+    "eval document.body.innerText"
+  ],
+  "agent_verdict": "success",
+  "agent_notes": "Logged in, opened modal, set date 2026-05-20, confirmed. Page shows 'Booked for 2026-05-20'.",
+  "server_verdict": {
+    "passed": true,
+    "evidence": {
+      "logged_in": true,
+      "booking": {
+        "date": "2026-05-20"
+      }
+    },
+    "score": 1.0
+  },
+  "success": true
+}

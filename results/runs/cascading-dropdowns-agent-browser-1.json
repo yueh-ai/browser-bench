@@ -1,0 +1,34 @@
+{
+  "task_id": "cascading-dropdowns",
+  "tool": "agent-browser",
+  "seed": 1,
+  "sid": "bench-cascading-dropdowns-agent-browser-1",
+  "started_at": "2026-04-18T00:00:00Z",
+  "ended_at": "2026-04-18T00:00:00Z",
+  "elapsed_ms": 31608,
+  "turns": 10,
+  "commands": [
+    "open http://localhost:3000/dropdowns?sid=bench-cascading-dropdowns-agent-browser-1",
+    "snapshot -i",
+    "click @e3",
+    "snapshot -i",
+    "batch click @e6 click @e4",
+    "snapshot -i",
+    "batch click @e6 click @e5",
+    "snapshot -i",
+    "batch click @e6 click @e2",
+    "snapshot -i"
+  ],
+  "agent_verdict": "success",
+  "agent_notes": "Selected United States, California, San Francisco via custom dropdowns; clicked Submit.",
+  "server_verdict": {
+    "passed": true,
+    "evidence": {
+      "country": "United States",
+      "state": "California",
+      "city": "San Francisco"
+    },
+    "score": 1.0
+  },
+  "success": true
+}

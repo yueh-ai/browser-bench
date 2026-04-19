@@ -30,6 +30,13 @@ browser-bench/
 └── scripts/          run.sh one-shot entrypoint
 ```
 
+## Results (K=2 pilot)
+
+- **Headline:** Both tools hit 100% success on all 6 scenarios; agent-browser averaged **5.8 turns/task** vs playwright-cli's **8.0**. agent-browser won 4 cells, playwright-cli won 1, 1 tied.
+- **Full report:** [`results/report.md`](results/report.md) — per-scenario tables + sample command traces.
+- **Narrative findings:** [`results/findings.md`](results/findings.md) — interpretation, prediction vs observation, caveats.
+- **Short scoreboard:** [`results/summary.md`](results/summary.md).
+
 ## Running
 
 See `scripts/run.sh`.

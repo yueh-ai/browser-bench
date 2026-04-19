@@ -1,0 +1,28 @@
+{
+  "task_id": "virtualized-scroll",
+  "tool": "agent-browser",
+  "seed": 1,
+  "sid": "bench-virtualized-scroll-agent-browser-1",
+  "started_at": "2026-04-18T00:00:00Z",
+  "ended_at": "2026-04-18T00:00:00Z",
+  "elapsed_ms": 56025,
+  "turns": 4,
+  "commands": [
+    "open http://localhost:3000/scroll?sid=bench-virtualized-scroll-agent-browser-1",
+    "eval window.__TARGET_INDEX",
+    "eval scroll viewport to target and read data-secret",
+    "eval POST /api/secret with {secret}"
+  ],
+  "agent_verdict": "success",
+  "agent_notes": "Target index 173; scrolled viewport to row, read data-secret=411681bb, POST returned {ok:true}",
+  "server_verdict": {
+    "passed": true,
+    "evidence": {
+      "secret_submitted": "411681bb",
+      "secret_expected": "411681bb",
+      "target_index": 173
+    },
+    "score": 1.0
+  },
+  "success": true
+}

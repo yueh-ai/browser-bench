@@ -1,0 +1,31 @@
+{
+  "task_id": "form-fill",
+  "tool": "agent-browser",
+  "seed": 0,
+  "sid": "bench-form-fill-agent-browser-0",
+  "started_at": "2026-04-18T00:00:00Z",
+  "ended_at": "2026-04-18T00:00:00Z",
+  "elapsed_ms": 15855,
+  "turns": 4,
+  "commands": [
+    "date +%s%3N && AGENT_BROWSER_EXECUTABLE_PATH=/opt/pw-browsers/chromium-1194/chrome-linux/chrome AGENT_BROWSER_SESSION=bench-form-fill-agent-browser-0 /home/user/browser-bench/.npm-global/bin/agent-browser --json open \"http://localhost:3000/form?sid=bench-form-fill-agent-browser-0\"",
+    "AGENT_BROWSER_EXECUTABLE_PATH=/opt/pw-browsers/chromium-1194/chrome-linux/chrome AGENT_BROWSER_SESSION=bench-form-fill-agent-browser-0 /home/user/browser-bench/.npm-global/bin/agent-browser --json snapshot -i",
+    "AGENT_BROWSER_EXECUTABLE_PATH=/opt/pw-browsers/chromium-1194/chrome-linux/chrome AGENT_BROWSER_SESSION=bench-form-fill-agent-browser-0 /home/user/browser-bench/.npm-global/bin/agent-browser --json batch \"fill @e2 \\\"Ada\\\"\" \"fill @e3 \\\"Lovelace\\\"\" \"fill @e4 \\\"ada@example.com\\\"\" \"fill @e5 \\\"+1-555-0100\\\"\" \"select @e6 \\\"United Kingdom\\\"\" \"check @e7\" \"click @e8\"",
+    "AGENT_BROWSER_EXECUTABLE_PATH=/opt/pw-browsers/chromium-1194/chrome-linux/chrome AGENT_BROWSER_SESSION=bench-form-fill-agent-browser-0 /home/user/browser-bench/.npm-global/bin/agent-browser --json snapshot -i && date +%s%3N"
+  ],
+  "agent_verdict": "success",
+  "agent_notes": "Opened form, snapshotted, batch-filled all fields and submitted. Landed on /api/form-submit confirming submission.",
+  "server_verdict": {
+    "passed": true,
+    "evidence": {
+      "first_name": "Ada",
+      "last_name": "Lovelace",
+      "email": "ada@example.com",
+      "phone": "+1-555-0100",
+      "country": "GB",
+      "subscribe": true
+    },
+    "score": 1.0
+  },
+  "success": true
+}

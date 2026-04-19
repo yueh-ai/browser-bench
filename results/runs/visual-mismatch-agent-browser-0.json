@@ -1,0 +1,31 @@
+{
+  "task_id": "visual-mismatch",
+  "tool": "agent-browser",
+  "seed": 0,
+  "sid": "bench-visual-mismatch-agent-browser-0",
+  "started_at": "2026-04-18T00:00:00Z",
+  "ended_at": "2026-04-18T00:00:00Z",
+  "elapsed_ms": 68712,
+  "turns": 6,
+  "commands": [
+    "open http://localhost:3000/visual?sid=bench-visual-mismatch-agent-browser-0",
+    "snapshot -i",
+    "eval inspect buttons",
+    "click @e4 (Delete)",
+    "snapshot -i",
+    "click @e5 (I'm sure)",
+    "snapshot -i"
+  ],
+  "agent_verdict": "success",
+  "agent_notes": "Save had opacity 0.3 (visually disabled). Cancel was aria-disabled. Delete was the only visually enabled AND not aria-disabled button. Clicked Delete, then I'm sure.",
+  "server_verdict": {
+    "passed": true,
+    "evidence": {
+      "last_click": "confirm",
+      "delete_clicked": true,
+      "confirmed": true
+    },
+    "score": 1.0
+  },
+  "success": true
+}

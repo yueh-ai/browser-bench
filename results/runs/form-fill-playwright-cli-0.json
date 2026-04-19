@@ -1,0 +1,36 @@
+{
+  "task_id": "form-fill",
+  "tool": "playwright-cli",
+  "seed": 0,
+  "sid": "bench-form-fill-playwright-cli-0",
+  "started_at": "2026-04-18T00:00:00Z",
+  "ended_at": "2026-04-18T00:00:00Z",
+  "elapsed_ms": 46346,
+  "turns": 9,
+  "commands": [
+    "open \"http://localhost:3000/form?sid=bench-form-fill-playwright-cli-0\"",
+    "snapshot",
+    "fill e5 \"Ada\"",
+    "fill e7 \"Lovelace\"",
+    "fill e9 \"ada@example.com\"",
+    "fill e11 \"+1-555-0100\"",
+    "select e13 \"United Kingdom\"",
+    "check e15",
+    "click e16"
+  ],
+  "agent_verdict": "success",
+  "agent_notes": "Filled all form fields, selected country, checked subscribe, submitted. Form redirected to /api/form-submit.",
+  "server_verdict": {
+    "passed": true,
+    "evidence": {
+      "first_name": "Ada",
+      "last_name": "Lovelace",
+      "email": "ada@example.com",
+      "phone": "+1-555-0100",
+      "country": "GB",
+      "subscribe": true
+    },
+    "score": 1.0
+  },
+  "success": true
+}

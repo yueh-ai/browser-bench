@@ -27,7 +27,9 @@ Begin by opening this URL with `{binary_path} -s={sid} open {start_url}`.
 ## Cheatsheet (playwright-cli)
 - `open <url>` — navigate.
 - `snapshot` — accessibility tree; refs appear as `[ref=eN]`. Use the `eN` id directly.
-- `click eN`, `type "text"` (types into focused field), `press <key>` (e.g. `press Enter`), `check eN`, `uncheck eN`, `select eN "value"`.
+- `fill eN "text"` — fill an input by ref (use this for form fields).
+- `click eN`, `check eN`, `uncheck eN`, `select eN "value"`, `press <key>` (e.g. `press Enter`), `type "text"` (types into currently focused field, no ref).
+- `eval "<js>"` — run JS in the page (returns the value of the expression).
 - No batch. One command per invocation. Plan accordingly given the turn budget.
 - Session is sticky via `-s={sid}` flag (also settable via `PLAYWRIGHT_CLI_SESSION={sid}` env var).
 - Snapshots are pseudo-YAML; read the indent structure carefully to locate refs.

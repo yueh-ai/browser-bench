@@ -28,7 +28,8 @@ Begin by opening this URL with `open {start_url}`.
 ## Cheatsheet (agent-browser)
 - `open <url>` — navigate.
 - `snapshot -i` — interactive accessibility tree; returns refs like `@e3`.
-- `click @eN`, `fill @eN "value"`, `press @eN Enter`, `select @eN "option"`.
+- `click @eN`, `fill @eN "value"`, `check @eN`, `select @eN "option"`, `press @eN Enter`.
+- `eval "<js>"` — run JS in the page (returns the expression value).
 - `batch "cmd1" "cmd2" "cmd3"` — multiple steps in one turn. Prefer this to save turns.
 - `--json` on every call; parse the JSON body for success/error.
 - Session is sticky via `AGENT_BROWSER_SESSION={sid}` env var (or `--session {sid}`).

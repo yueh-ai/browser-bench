@@ -1,0 +1,11 @@
+{
+  "id": "visual-mismatch",
+  "title": "Visual / aria disagreement",
+  "scenario_n": 6,
+  "start_url_template": "http://localhost:3000/visual?sid={sid}",
+  "verify_url_template": "http://localhost:3000/verify/visual-mismatch?sid={sid}",
+  "goal": "Click the only button that is both visually enabled AND not aria-disabled. Then confirm the action by clicking the 'I'm sure' button that appears.",
+  "max_turns": 15,
+  "predicted_winner": "toss-up",
+  "tags": ["a11y", "reasoning"]
+}

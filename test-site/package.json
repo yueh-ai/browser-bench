@@ -1,0 +1,13 @@
+{
+  "name": "browser-bench-test-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Test site hosting 6 scenario pages for browser-bench.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

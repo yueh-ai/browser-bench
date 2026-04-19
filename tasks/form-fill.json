@@ -1,0 +1,11 @@
+{
+  "id": "form-fill",
+  "title": "Static form fill (6 fields)",
+  "scenario_n": 1,
+  "start_url_template": "http://localhost:3000/form?sid={sid}",
+  "verify_url_template": "http://localhost:3000/verify/form-fill?sid={sid}",
+  "goal": "Fill the registration form with First name Ada, Last name Lovelace, Email ada@example.com, Phone +1-555-0100, Country United Kingdom, and check the Subscribe box. Submit the form.",
+  "max_turns": 15,
+  "predicted_winner": "agent-browser",
+  "tags": ["batch", "static-form"]
+}

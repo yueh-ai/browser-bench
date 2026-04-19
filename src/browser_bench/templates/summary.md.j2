@@ -1,0 +1,33 @@
+# browser-bench summary
+
+Total runs: {{ total_runs }}
+
+{% set ab_rows = [] %}
+{% set pw_rows = [] %}
+{% for r in rows %}
+{%   if r.tool == 'agent-browser' %}{% set _ = ab_rows.append(r) %}{% endif %}
+{%   if r.tool == 'playwright-cli' %}{% set _ = pw_rows.append(r) %}{% endif %}
+{% endfor %}
+
+| Tool | Tasks | Wins | Avg success | Avg turns | Avg ms |
+| --- | ---: | ---: | ---: | ---: | ---: |
+{% for tool, lst in [('agent-browser', ab_rows), ('playwright-cli', pw_rows)] %}
+{% set n = lst | length %}
+{% set wins = lst | selectattr('success_rate', 'equalto', 1.0) | list | length %}
+{% set avg_sr = (lst | map(attribute='success_rate') | sum) / n if n else 0 %}
+{% set avg_t = (lst | map(attribute='mean_turns') | sum) / n if n else 0 %}
+{% set avg_ms = (lst | map(attribute='mean_elapsed_ms') | sum) / n if n else 0 %}
+| {{ tool }} | {{ n }} | {{ wins }} | {{ '%.0f' | format(avg_sr * 100) }}% | {{ '%.1f' | format(avg_t) }} | {{ '%.0f' | format(avg_ms) }} |
+{% endfor %}
+
+## Per-task success
+
+| Task | agent-browser | playwright-cli |
+| --- | ---: | ---: |
+{% set task_ids = [] %}
+{% for r in rows %}{% if r.task_id not in task_ids %}{% set _ = task_ids.append(r.task_id) %}{% endif %}{% endfor %}
+{% for task_id in task_ids | sort %}
+{% set ab = (rows | selectattr('task_id', 'equalto', task_id) | selectattr('tool', 'equalto', 'agent-browser') | list | first) %}
+{% set pw = (rows | selectattr('task_id', 'equalto', task_id) | selectattr('tool', 'equalto', 'playwright-cli') | list | first) %}
+| {{ task_id }} | {% if ab %}{{ '%.0f' | format(ab.success_rate * 100) }}%{% else %}-{% endif %} | {% if pw %}{{ '%.0f' | format(pw.success_rate * 100) }}%{% else %}-{% endif %} |
+{% endfor %}

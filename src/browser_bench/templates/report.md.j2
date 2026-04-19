@@ -1,0 +1,47 @@
+# browser-bench report
+
+Total runs: {{ total_runs }}
+
+## Head-to-head scoreboard
+
+| Task | agent-browser success | playwright-cli success | ab mean turns | pw mean turns | ab mean ms | pw mean ms |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+{% for task_id, cells in pivot.items() | sort %}
+{% set ab = cells.get('agent-browser') %}
+{% set pw = cells.get('playwright-cli') %}
+| {{ task_id }} | {% if ab %}{{ '%.0f' | format(ab.success_rate * 100) }}% ({{ ab.k }}){% else %}-{% endif %} | {% if pw %}{{ '%.0f' | format(pw.success_rate * 100) }}% ({{ pw.k }}){% else %}-{% endif %} | {% if ab %}{{ '%.1f' | format(ab.mean_turns) }}{% else %}-{% endif %} | {% if pw %}{{ '%.1f' | format(pw.mean_turns) }}{% else %}-{% endif %} | {% if ab %}{{ '%.0f' | format(ab.mean_elapsed_ms) }}{% else %}-{% endif %} | {% if pw %}{{ '%.0f' | format(pw.mean_elapsed_ms) }}{% else %}-{% endif %} |
+{% endfor %}
+
+## Per-scenario detail
+
+{% for task_id, cells in pivot.items() | sort %}
+### {{ task_id }}{% if tasks.get(task_id) %} — {{ tasks[task_id].title }}{% endif %}
+
+{% if tasks.get(task_id) %}
+**Goal:** {{ tasks[task_id].goal }}
+
+**Predicted winner:** {{ tasks[task_id].predicted_winner }}
+{% endif %}
+
+| Tool | K | success | mean/med/p90 turns | mean ms | distinct cmds | top failure tokens |
+| --- | ---: | ---: | --- | ---: | ---: | --- |
+{% for tool in ['agent-browser', 'playwright-cli'] %}
+{% set row = cells.get(tool) %}
+{% if row %}
+| {{ tool }} | {{ row.k }} | {{ '%.0f' | format(row.success_rate * 100) }}% | {{ '%.1f' | format(row.mean_turns) }} / {{ '%.1f' | format(row.median_turns) }} / {{ '%.1f' | format(row.p90_turns) }} | {{ '%.0f' | format(row.mean_elapsed_ms) }} | {{ row.distinct_commands }} | {% for tok, n in row.top_failure_modes %}`{{ tok }}`({{ n }}){% if not loop.last %}, {% endif %}{% endfor %} |
+{% endif %}
+{% endfor %}
+
+{% for tool in ['agent-browser', 'playwright-cli'] %}
+{% set sample = samples.get((task_id, tool)) %}
+{% if sample %}
+**Sample {{ tool }} commands:**
+```
+{% for cmd in sample %}
+{{ cmd }}
+{% endfor %}
+```
+{% endif %}
+{% endfor %}
+
+{% endfor %}

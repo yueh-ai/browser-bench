@@ -1,0 +1,11 @@
+{
+  "id": "multi-tab",
+  "title": "Multi-tab data aggregation (5 pages)",
+  "scenario_n": 3,
+  "start_url_template": "http://localhost:3000/products?sid={sid}",
+  "verify_url_template": "http://localhost:3000/verify/multi-tab?sid={sid}",
+  "goal": "Visit each of the 5 product pages linked from the list, sum the prices you observe, and POST the total to /api/total?sid=<sid> as JSON {\"total\": <number>} using the browser tool's JS eval (fetch). Report the final total in your summary.",
+  "max_turns": 15,
+  "predicted_winner": "agent-browser",
+  "tags": ["multi-tab", "extract"]
+}

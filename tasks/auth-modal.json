@@ -1,0 +1,11 @@
+{
+  "id": "auth-modal",
+  "title": "Login + modal + date picker",
+  "scenario_n": 5,
+  "start_url_template": "http://localhost:3000/auth?sid={sid}",
+  "verify_url_template": "http://localhost:3000/verify/auth-modal?sid={sid}",
+  "goal": "Log in as user admin password hunter2, open the Book appointment modal, set the date to 2026-05-20, and confirm.",
+  "max_turns": 15,
+  "predicted_winner": "agent-browser",
+  "tags": ["auth", "modal"]
+}

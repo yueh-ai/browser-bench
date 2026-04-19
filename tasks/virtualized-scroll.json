@@ -1,0 +1,11 @@
+{
+  "id": "virtualized-scroll",
+  "title": "Virtualized infinite scroll (200 items, ~10 in DOM)",
+  "scenario_n": 4,
+  "start_url_template": "http://localhost:3000/scroll?sid={sid}",
+  "verify_url_template": "http://localhost:3000/verify/virtualized-scroll?sid={sid}",
+  "goal": "A target index is stored at window.__TARGET_INDEX on the page. Find the list item whose number equals that index, read its data-secret attribute, and POST it to /api/secret?sid=<sid> as JSON {\"secret\": <value>}.",
+  "max_turns": 15,
+  "predicted_winner": "toss-up",
+  "tags": ["virtualized", "js-eval"]
+}

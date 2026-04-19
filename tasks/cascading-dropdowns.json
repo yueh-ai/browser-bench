@@ -1,0 +1,11 @@
+{
+  "id": "cascading-dropdowns",
+  "title": "Cascading async dropdowns",
+  "scenario_n": 2,
+  "start_url_template": "http://localhost:3000/dropdowns?sid={sid}",
+  "verify_url_template": "http://localhost:3000/verify/cascading-dropdowns?sid={sid}",
+  "goal": "Set Country to United States, State to California, City to San Francisco, then click Submit location.",
+  "max_turns": 15,
+  "predicted_winner": "playwright-cli",
+  "tags": ["async", "re-render"]
+}
